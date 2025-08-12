@@ -55,14 +55,22 @@ class ProgramRunner(
     fun listQuotes(rq : Map<String, String>) {
         val quotes : List<Map<String, String>>
 
+
+        // 페이징 확인
+        var page = 1 // 기본 페이지 번호 설정
+        if(rq.containsKey("page")) {
+            // 페이지 번호가 유효하지 않으면 1로 설정
+            page = rq["page"]?.toIntOrNull() ?: 1
+        }
+
         // 키워드가 있는 경우 필터링
         if (rq.containsKey("keyword") && rq.containsKey("keywordType")) {
             val keyword = rq["keyword"] ?: ""
             val type = rq["keywordType"] ?: ""
-            quotes = quoteDictionary.getQuotes(type, keyword)
+            quotes = quoteDictionary.getQuotes(type, keyword, page)
         } else {
             // 키워드가 없는 경우 전체 목록 조회
-            quotes = quoteDictionary.getQuotes()
+            quotes = quoteDictionary.getQuotes(page = page)
         }
 
         // 출력

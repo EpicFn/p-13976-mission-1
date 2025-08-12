@@ -23,7 +23,7 @@ class TestQuoteDictionary : QuoteDictionary() {
 
     // 명언 목록 조회
     override
-    fun getQuotes(keywordType : String, keyword : String): List<Map<String, String>> {
+    fun getQuotes(keywordType : String, keyword : String, page : Int): List<Map<String, String>> {
 
         return quotes.map { (index, quote) ->
             val map = mutableMapOf<String, String>()

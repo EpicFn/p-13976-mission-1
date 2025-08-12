@@ -44,9 +44,8 @@ open class QuoteDictionary {
     }
 
     // 명언 목록 조회
-    open fun getQuotes(keywordType : String = "", keyword : String = ""): List<Map<String, String>> {
-
-        return quotes.map { (index, quote) ->
+    open fun getQuotes(keywordType: String = "", keyword: String = "", page: Int = 1): List<Map<String, String>> {
+        val filteredQuotes = quotes.map { (index, quote) ->
             val map = mutableMapOf<String, String>()
             map["index"] = index.toString()
             map["author"] = quote.author
@@ -59,10 +58,20 @@ open class QuoteDictionary {
                     "content" -> if (!quote.text.contains(keyword, ignoreCase = true)) return@map null
                 }
             }
-
             map
-        }.filterNotNull() // null 제거
+        }.filterNotNull()
+
+        val pageSize = 5
+        val total = filteredQuotes.size
+
+        val toIndex = total - (page - 1) * pageSize
+        val fromIndex = (toIndex - pageSize).coerceAtLeast(0)
+
+        if (toIndex <= 0) return emptyList()
+
+        return filteredQuotes.subList(fromIndex, toIndex)
     }
+
 
     // 명언 삭제
     open fun deleteQuote(index: Int): Boolean {
