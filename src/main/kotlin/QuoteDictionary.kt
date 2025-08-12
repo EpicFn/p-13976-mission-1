@@ -100,4 +100,9 @@ class QuoteDictionary {
             null
         }
     }
+
+    // 빌드 실행
+    fun buildDataJson() {
+        fileManager.buildDataJson(quotes.map { FileManager.QuoteData(it.key, it.value.author, it.value.text) })
+    }
 }

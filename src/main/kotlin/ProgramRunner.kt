@@ -21,6 +21,8 @@ class ProgramRunner {
                 cmd == "목록" -> listQuotes()
                 cmd.startsWith("삭제") -> deleteQuote(getCmdRq()["id"]?.toIntOrNull() ?: -1)
                 cmd.startsWith("수정") -> updateQuote(getCmdRq()["id"]?.toIntOrNull() ?: -1)
+                cmd == "빌드" -> build()
+
                 else -> println("알 수 없는 명령입니다.")
             }
         } while (true)
@@ -91,6 +93,12 @@ class ProgramRunner {
         } else {
             println("${idx}번 명언은 존재하지 않습니다.")
         }
+    }
+
+    // 빌드
+    fun build() {
+        quoteDictionary.buildDataJson()
+        println("data.json 파일의 내용이 갱신되었습니다.")
     }
 
     // ---------------------------------------------------------------------------

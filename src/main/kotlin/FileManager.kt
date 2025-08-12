@@ -54,6 +54,16 @@ class FileManager{
         saveLastId(1) // 초기화 후 마지막 ID를 1로 설정
     }
 
+    fun buildDataJson(quotes: List<QuoteData>) {
+        // 모든 명언을 JSON 배열로 변환, 하나의 파일에 저장
+        val jsonArray = quotes.joinToString(separator = ",\n") { quoteToJson(it) }
+
+        val jsonString = "[\n$jsonArray\n]"
+        val file = File("data.json")
+        file.writeText(jsonString)
+
+    }
+
     // --------------------------------------------------------------
     // json 변환 메서드
     // --------------------------------------------------------------
