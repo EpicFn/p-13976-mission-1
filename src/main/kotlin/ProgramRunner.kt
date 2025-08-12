@@ -24,7 +24,7 @@ class ProgramRunner(
                     break
                 }
                 cmd == "등록" -> registerQuote()
-                cmd == "목록" -> listQuotes()
+                cmd.startsWith("목록") -> listQuotes(getCmdRq())
                 cmd.startsWith("삭제") -> deleteQuote(getCmdRq()["id"]?.toIntOrNull() ?: -1)
                 cmd.startsWith("수정") -> updateQuote(getCmdRq()["id"]?.toIntOrNull() ?: -1)
                 cmd == "빌드" -> build()
@@ -52,8 +52,18 @@ class ProgramRunner(
     }
 
     // 명언 목록 조회
-    fun listQuotes(){
-        val quotes = quoteDictionary.getQuotes()
+    fun listQuotes(rq : Map<String, String>) {
+        val quotes : List<Map<String, String>>
+
+        // 키워드가 있는 경우 필터링
+        if (rq.containsKey("keyword") && rq.containsKey("keywordType")) {
+            val keyword = rq["keyword"] ?: ""
+            val type = rq["keywordType"] ?: ""
+            quotes = quoteDictionary.getQuotes(type, keyword)
+        } else {
+            // 키워드가 없는 경우 전체 목록 조회
+            quotes = quoteDictionary.getQuotes()
+        }
 
         // 출력
         println("번호 / 작가 / 명언")

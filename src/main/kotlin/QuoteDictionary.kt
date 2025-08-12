@@ -44,14 +44,24 @@ open class QuoteDictionary {
     }
 
     // 명언 목록 조회
-    open fun getQuotes(): List<Map<String, String>> {
-        return quotes.entries.map { (index, quote) ->
-            mapOf(
-                "index" to index.toString(),
-                "text" to quote.text,
-                "author" to quote.author
-            )
-        }
+    open fun getQuotes(keywordType : String = "", keyword : String = ""): List<Map<String, String>> {
+
+        return quotes.map { (index, quote) ->
+            val map = mutableMapOf<String, String>()
+            map["index"] = index.toString()
+            map["author"] = quote.author
+            map["text"] = quote.text
+
+            // 키워드 필터링
+            if (keywordType.isNotEmpty() && keyword.isNotEmpty()) {
+                when (keywordType.lowercase()) {
+                    "author" -> if (!quote.author.contains(keyword, ignoreCase = true)) return@map null
+                    "content" -> if (!quote.text.contains(keyword, ignoreCase = true)) return@map null
+                }
+            }
+
+            map
+        }.filterNotNull() // null 제거
     }
 
     // 명언 삭제
