@@ -1,8 +1,14 @@
 package com
 
-class ProgramRunner {
+class ProgramRunner(
+    var testMode: Boolean = false // 테스트 모드 여부
+){
     var cmd : String = "default"
-    val quoteDictionary = QuoteDictionary()
+    val quoteDictionary = if (testMode) {
+        TestQuoteDictionary() // 테스트 모드에서는 TestQuoteDictionary 사용
+    } else {
+        QuoteDictionary() // 일반 모드에서는 QuoteDictionary 사용
+    }
 
     fun run() {
         println("== 명언 앱 ==")
@@ -127,6 +133,7 @@ class ProgramRunner {
 
         return result
     }
+
 
 
 }

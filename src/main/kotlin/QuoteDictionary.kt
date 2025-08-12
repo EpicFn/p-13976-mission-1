@@ -1,8 +1,7 @@
 package com
+data class Quote (var text: String, var author: String)
 
-class QuoteDictionary {
-    data class Quote (var text: String, var author: String)
-
+open class QuoteDictionary {
     // --------------------------------------------------------
     // 필드
     // --------------------------------------------------------
@@ -33,7 +32,7 @@ class QuoteDictionary {
     // --------------------------------------------------------
 
     // 명언 추가
-    fun addQuote(text: String, author: String): Int {
+    open fun addQuote(text: String, author: String): Int {
         val index = nextIndex++
         quotes[index] = Quote(text, author)
 
@@ -45,7 +44,7 @@ class QuoteDictionary {
     }
 
     // 명언 목록 조회
-    fun getQuotes(): List<Map<String, String>> {
+    open fun getQuotes(): List<Map<String, String>> {
         return quotes.entries.map { (index, quote) ->
             mapOf(
                 "index" to index.toString(),
@@ -56,7 +55,7 @@ class QuoteDictionary {
     }
 
     // 명언 삭제
-    fun deleteQuote(index: Int): Boolean {
+    open fun deleteQuote(index: Int): Boolean {
         if (!quotes.containsKey(index)) {
             return false // 해당 인덱스의 명언이 존재하지 않음
         }
@@ -68,7 +67,7 @@ class QuoteDictionary {
     }
 
     // 명언 수정
-    fun updateQuote(index: Int, newText: String, newAuthor: String) : Boolean {
+    open fun updateQuote(index: Int, newText: String, newAuthor: String) : Boolean {
         if (quotes.containsKey(index)) {
             quotes[index] = Quote(newText, newAuthor)
 
@@ -82,7 +81,7 @@ class QuoteDictionary {
     }
 
     // 명언 목록 초기화
-    fun clearQuotes() {
+    open fun clearQuotes() {
         quotes.clear()
         nextIndex = 0
 
@@ -95,14 +94,14 @@ class QuoteDictionary {
     }
 
     // 특정 인덱스의 명언 조회
-    fun getQuote(index: Int): Quote? {
+    open fun getQuote(index: Int): Quote? {
         return quotes[index] ?: run {
             null
         }
     }
 
     // 빌드 실행
-    fun buildDataJson() {
+    open fun buildDataJson() {
         fileManager.buildDataJson(quotes.map { FileManager.QuoteData(it.key, it.value.author, it.value.text) })
     }
 }
